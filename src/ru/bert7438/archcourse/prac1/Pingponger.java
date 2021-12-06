@@ -4,11 +4,13 @@ public class Pingponger implements Runnable{
     String value;
     private boolean isActive;
     Output output;
+    Object obj;
 
     public Pingponger(String value, Output output) {
         this.value = value;
         this.isActive = true;
         this.output = output;
+        obj = new Object();
     }
 
     void disable() {
