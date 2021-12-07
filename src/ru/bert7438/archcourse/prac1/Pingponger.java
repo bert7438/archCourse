@@ -1,16 +1,14 @@
 package ru.bert7438.archcourse.prac1;
 
-public class Pingponger implements Runnable{
+public class Pingponger implements Runnable {
     String value;
     private boolean isActive;
-    Output output;
     Object obj;
 
-    public Pingponger(String value, Output output) {
+    public Pingponger(String value, Object obj) {
         this.value = value;
         this.isActive = true;
-        this.output = output;
-        obj = new Object();
+        this.obj = obj;
     }
 
     void disable() {
@@ -19,8 +17,17 @@ public class Pingponger implements Runnable{
 
     @Override
     public void run() {
-        while (isActive) {
-            output.print(value);
+        synchronized (obj) {
+            while (isActive) {
+                try {
+                    System.out.println(value);
+                    Thread.sleep(1000);
+                    obj.notify();
+                    obj.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
